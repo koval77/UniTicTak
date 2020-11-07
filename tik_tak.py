@@ -8,6 +8,7 @@ class Window(Frame):
 root=Tk()
 app=Window(root)
 root.wm_title("Tik tak game")
+
 root.mainloop()
 
 
