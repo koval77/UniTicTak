@@ -1,9 +1,11 @@
 # write your code here
-print("Enter cells: > ")
-tictak_string = input()
+# print("Enter cells: > ")
+tictak_string = '---------'
 ind = 0
-#tictak_string = ("O--X-----")
+# tictak_string = ("O--X-----")
 tictak_string = tictak_string.upper()
+# Checking this variable to decide whose turn it is.
+player_turn = 0
 
 
 def draw_board(tictak):
@@ -38,7 +40,7 @@ def result(tictak):
             tictak[2] == 'O' and tictak[4] == 'O' and tictak[6] == 'O'):
         return "O wins"
     elif (tictak[0] == 'X' and tictak[1] == 'X' and tictak[2] == 'X') or (
-            tictak[3] == 'O' and tictak[4] == 'X' and tictak[5] == 'X') or (
+            tictak[3] == 'X' and tictak[4] == 'X' and tictak[5] == 'X') or (
             tictak[6] == 'X' and tictak[7] == 'X' and tictak[8] == 'X') or (
             tictak[0] == 'X' and tictak[3] == 'X' and tictak[6] == 'X') or (
             tictak[1] == 'X' and tictak[4] == 'X' and tictak[7] == 'X') or (
@@ -48,9 +50,9 @@ def result(tictak):
         return "X wins"
     for row in rows:
         if row == row3 and (row != ['O', 'O', 'O'] and row != ['X', 'X', 'X']) and '_' in tictak:
-            return "Game not finished"
+            return "Draw"
         elif row == row3 and ('OOO' not in row and 'XXX' not in row) and '_' not in tictak:
-            return 'Draw'
+            return 'Game not finished'
 
 
 def validate_coordinates(coordinates):
@@ -66,10 +68,14 @@ def validate_coordinates(coordinates):
         print("This cell is occupied! Choose another one!")
         ask_for_coordinates()
     else:
-        #tictak_string_list=tictak_string.split("")
-        tictak_string_list=[char for char in tictak_string]
-        tictak_string_list[ind]='X'
-        tictak_string="".join(tictak_string_list)
+        # tictak_string_list=tictak_string.split("")
+        tictak_string_list = [char for char in tictak_string]
+        if player_turn % 2 == 0:
+            tictak_string_list[ind] = 'X'
+            tictak_string = "".join(tictak_string_list)
+        else:
+            tictak_string_list[ind] = 'O'
+            tictak_string = "".join(tictak_string_list)
 
 
 def translate_co(x, y):
@@ -95,13 +101,24 @@ def translate_co(x, y):
     elif [i, j] == [3, 3]:
         ind = 2
 
+
 def ask_for_coordinates():
     print("Enter the coordinates: > ")
     coordinates_list = [x for x in input().split()]
     validate_coordinates(coordinates_list)
 
-draw_board(tictak_string)
-print(result(tictak_string))
-ask_for_coordinates()
+
+def check_if_end_of_game():
+    if result(tictak_string)=='O wins' or result(tictak_string)=='X wins':
+        return 'finish'
+
+#print(result(tictak_string))
+#ask_for_coordinates()
 # print(coordinates_list[0].isnumeric())
-draw_board(tictak_string)
+#draw_board(tictak_string)
+
+while check_if_end_of_game()!='finish':
+    draw_board(tictak_string)
+    ask_for_coordinates()
+    player_turn += 1
+    print(result(tictak_string))
